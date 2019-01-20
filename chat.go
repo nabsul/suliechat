@@ -9,11 +9,12 @@ import (
 )
 
 func getMyMessages() {
-	getMessages("")
-}
-
-func getSentMessages() {
-	getMessages("?to=" + os.Args[2])
+	path := "messages"
+	result := request("GET", path, nil)
+	messages := parseMessages(result)
+	for _, m := range messages {
+		fmt.Printf("%s - [from %s to %s] %s\n", convertTime(m.TimeSent), m.From, m.To, m.Text)
+	}
 }
 
 func sendMessage() {
@@ -41,8 +42,7 @@ func getHelp() {
 	fmt.Println("")
 	fmt.Println("suliechat help\n   This message")
 	fmt.Println("suliechat config [server] [username] [password]\n   Create a new configuration")
-	fmt.Println("suliechat messages\n   Show my messages")
-	fmt.Println("suliechat sent [user]\n   Show messages I sent to a user")
+	fmt.Println("suliechat check\n   Show my messages")
 	fmt.Println("suliechat send [user] [message]\n   Send message to user")
 	fmt.Println("suliechat users\n   List all users")
 }
@@ -51,7 +51,6 @@ var commands = map[string] func()() {
 	"help": getHelp,
 	"config": saveConfig,
 	"check": getMyMessages,
-	"sent": getSentMessages,
 	"send": sendMessage,
 	"users": listUsers,
 }

@@ -2,22 +2,12 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"sort"
 )
 
 type message struct {
 	To, From, Text, TimeRead, TimeSent string
-}
-
-func getMessages(query string) {
-	path := "messages" + query
-	result := request("GET", path, nil)
-	messages := parseMessages(result)
-	for _, m := range messages {
-		fmt.Printf("%s - [from %s to %s] %s\n", convertTime(m.TimeSent), m.From, m.To, m.Text)
-	}
 }
 
 func parseMessages(body string) []message {
