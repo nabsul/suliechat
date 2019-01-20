@@ -13,7 +13,7 @@ func getMyMessages() {
 	result := request("GET", path, nil)
 	messages := parseMessages(result)
 	for _, m := range messages {
-		fmt.Printf("%s - [from %s to %s] %s\n", convertTime(m.TimeSent), m.From, m.To, m.Text)
+		fmt.Printf("[%s]: from %s to %s\n%s\n\n", convertTime(m.TimeSent), m.From, m.To, m.Text)
 	}
 }
 
