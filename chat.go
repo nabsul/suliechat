@@ -25,6 +25,17 @@ func sendMessage() {
 	fmt.Println(response)
 }
 
+func listUsers() {
+	result := request("GET", "users", nil)
+	users := make([]struct{Username string}, 0)
+	err := json.Unmarshal([]byte(result), &users)
+	checkError(err)
+	fmt.Println("Users:")
+	for _, u := range users {
+		fmt.Println("  " + u.Username)
+	}
+}
+
 func getHelp() {
 	fmt.Println("SulieChat: A Command-line Messaging Client")
 	fmt.Println("")
@@ -33,14 +44,16 @@ func getHelp() {
 	fmt.Println("suliechat messages\n   Show my messages")
 	fmt.Println("suliechat sent [user]\n   Show messages I sent to a user")
 	fmt.Println("suliechat send [user] [message]\n   Send message to user")
+	fmt.Println("suliechat users\n   List all users")
 }
 
 var commands = map[string] func()() {
 	"help": getHelp,
 	"config": saveConfig,
-	"messages": getMyMessages,
+	"check": getMyMessages,
 	"sent": getSentMessages,
 	"send": sendMessage,
+	"users": listUsers,
 }
 
 func main() {
